@@ -60,6 +60,47 @@ void averageTime(char *name,
     printf("Average time taken for %s over %d iterations: %f seconds\n\n", name, 30, totalTime / 30);
 }
 
+void boundaryTest(
+    char *name,
+    void (*function)(float, float*, float*, float*, int),
+    float scalarVal,
+    float *vec,
+    float *Xi,
+    float *Yi,
+    int size
+) {
+    printf("\nBoundary test: %s\n", name);
+
+    // Test the final elements and the first elements beyond the boundary
+    int start = size - 5;
+    int end = size + 8;
+
+    for (int i = start; i < end; i++) {
+        Xi[i] = (float)i + 0.005f;
+        Yi[i] = (float)i + 0.005f;
+        vec[i] = -1.0f; 
+    }
+
+    // Process the final 5 elements plus 8 extra elements
+    function(scalarVal, vec, Xi, Yi, end);
+
+    int passed = 1;
+
+    for (int i = start; i < end; i++) {
+        float expected = scalarVal * Xi[i] + Yi[i];
+
+        if (vec[i] != expected) {
+            printf("FAIL at index %d: expected=%f, actual=%f\n",
+                   i, expected, vec[i]);
+            passed = 0;
+        }
+    }
+
+    if (passed) {
+        printf("PASS: %s processed elements %d to %d correctly.\n",
+               name, start, end - 1);
+    }
+}
 
 int main() {
     char choice='0';
@@ -116,6 +157,7 @@ Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
     printf("\n");
     averageTime("C", cVersion, x, vecC, Xi, Yi, size);
+    boundaryTest("C", cVersion, x, vecC, Xi, Yi, size);
 /*---------------------------------------------------------*/
 
 /*Passing the function XMM into another function called averageTime.
@@ -132,6 +174,8 @@ In this section, we also display the first 5 and last 5 vector element*/
 
     averageTime("x86_64", x86_64, x, vecx86_64, Xi, Yi, size);
     printVectors(vecC,vecx86_64, size, "x86_64");
+    boundaryTest("x86_64", x86_64, x, vecx86_64, Xi, Yi, size);
+
 /*---------------------------------------------------------*/
 
 /*Passing the function YMM into another function called averageTime.
@@ -140,6 +184,7 @@ In this section, we also display the first 5 and last 5 vector element*/
 
     averageTime("YMM", ymm, x, vecYMM, Xi, Yi, size);
     printVectors(vecC, vecYMM, size, "YMM");
+    boundaryTest("YMM", ymm, x, vecYMM, Xi, Yi, size);
 /*---------------------------------------------------------*/
 
 /* Checker that checks if the vectors values match*/
