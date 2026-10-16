@@ -19,7 +19,7 @@ x86_64:
     ; index = 0
     ; size = size
     xor r10, r10
-    movsxd r11, dword [rbp+40]
+    movsxd r11, dword [rbp+32]
 
 .loop:
     ; if (index >= size), exit
