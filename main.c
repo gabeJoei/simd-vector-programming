@@ -155,17 +155,11 @@ int main() {
 Passing the function C into another function called averageTime.
 Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
+
     printf("\n");
     averageTime("C", cVersion, x, vecC, Xi, Yi, size);
     boundaryTest("C", cVersion, x, vecC, Xi, Yi, size);
-/*---------------------------------------------------------*/
 
-/*Passing the function XMM into another function called averageTime.
-Where it runs the function 30 times and calculates the average time.
-In this section, we also display the first 5 and last 5 vector element*/
-
-    //averageTime("XMM", xmm, x, vecXMM, Xi, Yi, size);
-    //printVectors(vecC,vecXMM, size, "XMM");
 /*---------------------------------------------------------*/
 
 /*Passing the function x86_64 into another function called averageTime.
@@ -178,6 +172,16 @@ In this section, we also display the first 5 and last 5 vector element*/
 
 /*---------------------------------------------------------*/
 
+/*Passing the function XMM into another function called averageTime.
+Where it runs the function 30 times and calculates the average time.
+In this section, we also display the first 5 and last 5 vector element*/
+
+    //averageTime("XMM", xmm, x, vecXMM, Xi, Yi, size);
+    //printVectors(vecC,vecXMM, size, "XMM");
+    //boundaryTest("XMM", xmm, x, vecXMM, Xi, Yi, size);
+
+/*---------------------------------------------------------*/
+
 /*Passing the function YMM into another function called averageTime.
 Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
@@ -185,6 +189,7 @@ In this section, we also display the first 5 and last 5 vector element*/
     averageTime("YMM", ymm, x, vecYMM, Xi, Yi, size);
     printVectors(vecC, vecYMM, size, "YMM");
     boundaryTest("YMM", ymm, x, vecYMM, Xi, Yi, size);
+    
 /*---------------------------------------------------------*/
 
 /* Checker that checks if the vectors values match*/
