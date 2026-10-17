@@ -51,14 +51,13 @@ void averageTime(char *name,
 
     struct timespec start={0,0}, end={0,0};
     double totalTime = 0.0;
-    printf("\n\n");
     for (int i=0;i<30;i++) {
         clock_gettime(CLOCK_MONOTONIC, &start);
         function(scalarVal, vec, Xi, Yi, size);
         clock_gettime(CLOCK_MONOTONIC, &end);
         totalTime+=((double)(end.tv_sec - start.tv_sec) + (double)(end.tv_nsec - start.tv_nsec) / 1000000000.0);
     }
-    printf("Average time taken for %s over %d iterations: %f seconds\n", name, 30, totalTime / 30);
+    printf("Average time taken for %s over %d iterations: %f seconds\n\n", name, 30, totalTime / 30);
 }
 
 
@@ -115,7 +114,7 @@ int main() {
 Passing the function C into another function called averageTime.
 Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
-
+    printf("\n");
     averageTime("C", cVersion, x, vecC, Xi, Yi, size);
 /*---------------------------------------------------------*/
 
@@ -144,6 +143,7 @@ In this section, we also display the first 5 and last 5 vector element*/
 /*---------------------------------------------------------*/
 
 /* Checker that checks if the vectors values match*/
+printf("\n\nChecking if the vectors match...\n");
 comparisonChecker(vecC, vecXMM, size, "XMM");
 comparisonChecker(vecC, vecx86_64, size, "x86_64");
 comparisonChecker(vecC, vecYMM, size, "YMM");
