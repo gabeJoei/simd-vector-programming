@@ -47,7 +47,7 @@ Figure 5. Output result of correctness checks for all kernels
 
 Figure 6. Boundary Test Code
 
-The purpose of the boundary test function is to intentionally give the x86_64, XMM, and YMM out of bounds size, to observe if each program version can handle the excess elements. This is done by creating a test index start and end. Where the start index is size-5 and the end index is size 8. As such with size of 1,048,576 (2^20), the start index will be 1,048,571 and the end index will be 1,048,584. The total floating values being tested is 13 elements. For XMM there will be one extra element, and for the ymm there will be 5 extra elements. Based on the output of our program, both xmm and ymm were able to handle the extra elements and passed the boundary check.
+The purpose of the boundary test function is to intentionally give the x86_64, XMM, and YMM out of bounds size, to observe if each program version can handle the excess elements. This is done by creating a test index start and end. Where the start index is size-5 and the end index is size+8. As such with size of 1,048,576 (2^20), the start index will be 1,048,571 and the end index will be 1,048,584. The total floating values being tested is 13 elements. For XMM there will be one extra element, and for the ymm there will be 5 extra elements. Based on the output of our program, both xmm and ymm were able to handle the extra elements and passed the boundary check.
 
 ![Fig_8](imgs/fig8.png)
 Figure 7. Boundary checks for all kernels
