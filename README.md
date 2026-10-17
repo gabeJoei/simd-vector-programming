@@ -3,9 +3,11 @@ Members: Bactong, Gunita, Panganiban, Lobo
 
 ---
 ### i. Screenshot of  program output with execution time for all cases
-![Figure_1](imgs/fig1)
+![Fig_1](imgs/fig1.png)
+![Fig_2](imgs/fig2.png)
 
 ### ii. Comparative Table
+![Fig_3](imgs/fig3.png)
 
 ### iii. Analysis and Discussion
 
