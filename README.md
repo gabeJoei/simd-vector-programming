@@ -21,30 +21,30 @@ Figure 3. Program output for case 2^29
 
 ### ii) Comparative Table
 ![Fig_4](imgs/fig4.png)
-Figure 3. Comparitive Table of execution time, correctness, and boundary checks
+Figure 3. Comparative Table of execution time, correctness, and boundary checks
 
 #### ii.a) Speedup comparisons of versions against C
 ![Fig_5](imgs/fig5.png)
 
-Figure 3. Comparitive Table of speedups against C
+Figure 4. Comparative Table of speedups against C
 
 Based on the speedup comparison results against the C version. It can be said that XMM and YMM constantly out performs the C version due to its ability to parallel compute. The concept of parallelism in XMM and YMM allows each version to perform the AXPY calculation by handling 4 and 8 floats at a time, respectively. However, for the x86_64 version, it can be seen that C out performs its execution time when size is 2^20 and 2^26. This is due to its nature to calculate an operation 1 float at a time. Nevertheless, as the size continues to grow, such as when 2^27, it out performs C by 1.12x. As such it can be said that x86_64 will out perform C when handling size in extreme cases. 
 
 ### iii) Correctness checks
 ![Fig_6](imgs/fig6.png)
 
-Figure 3. Output result of correctness checks for all kernels
+Figure 5. Output result of correctness checks for all kernels
 
 
 ### vii) Boundary Check
 ![Fig_7](imgs/fig7.png)
 
-Figure 7. Boundary Test Code
+Figure 6. Boundary Test Code
 
 The purpose of the boundary test function is to intentionally give the x86_64, XMM, and YMM out of bounds size, to observe if each program version can handle the excess elements. This is done by creating a test index start and end. Where the start index is size-5 and the end index is size 8. As such with size of 1,048,576 (2^20), the start index will be 1,048,571 and the end index will be 1,048,584. The total floating values being tested is 13 elements. For XMM there will be one extra element, and for the ymm there will be 5 extra elements. Based on the output of our program, both xmm and ymm were able to handle the extra elements and passed the boundary check. 
 
 ![Fig_8](imgs/fig8.png)
-Figure 8. Boundary checks for all kernels
+Figure 7. Boundary checks for all kernels
 
 ### viii) Analysis and Discussion
 The performance of the C, x86-64 assembly, XMM, and YMM implementations were evaluated using different vector sizes of 2 to the power of 20, 2 to the power of 26, and 2 to the power of 29 elements. Each implementation was timed to compare its execution time when processing different amounts of data.
