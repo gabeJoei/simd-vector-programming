@@ -7,10 +7,10 @@ ymm:
     ; rdx = *vec
     ; r8 = *xi
     ; r9 = *yi
-    ; [rsp+40] = size
+    ; [rsp+40] = size (int)
     
     xor r10, r10 ; clear register r10 to be used for index.
-    mov r11, [rsp + 40] ; obtain vector size
+    movsxd r11, dword [rsp + 40] ; obtain vector size
     vbroadcastss ymm3, xmm0 ; duplicate x across ymm3
     
     ; convert vector size to bytes
