@@ -9,7 +9,7 @@
 //extern void x86_64(float scalarVal,float *vec, float *Xi, float *Yi, int size);
 extern void ymm(float scalarVal,float *vec, float *Xi, float *Yi, int size);
 
-
+/*Function that prints the first 5 and last 5 elements of a vector*/
 void printVector(float *vec, int size, char *name) {
     printf("%s: ", name);
     printf("First 5 elements of the vector: ");
@@ -23,6 +23,7 @@ void printVector(float *vec, int size, char *name) {
     printf("\n\n");
 }
 
+/*Function that compares the elements of four vectors*/
 void comparisonChecker(float *vecC, float *vecXMM, float *vecx86_64, float *vecYMM, int size) {
     for (int i = 0; i < size; i++) {
         if (vecC[i] != vecXMM[i] || vecC[i] != vecx86_64[i] || vecC[i] != vecYMM[i]) {
@@ -33,20 +34,23 @@ void comparisonChecker(float *vecC, float *vecXMM, float *vecx86_64, float *vecY
     printf("All vectors match. Yiee!\n");
 }
 
+/*Function that runs the ymm, xmm, x86_64 and the C versions of the Scalar vector (AXPY)
+for 30 iteration. Calaculates and displays the average time it took for each version*/
 void averageTime(char *name,
                 void (*function)(float, float*, float*, float*, int), 
                 float scalarVal, float *vec, float *Xi, float *Yi, int size){
 
     struct timespec start={0,0}, end={0,0};
     double totalTime = 0.0;
-    for (int i = 0; i <30; i++) {
+    for (int i=0;i<30;i++) {
         clock_gettime(CLOCK_MONOTONIC, &start);
         function(scalarVal, vec, Xi, Yi, size);
         clock_gettime(CLOCK_MONOTONIC, &end);
-        totalTime += ((double)(end.tv_sec - start.tv_sec) + (double)(end.tv_nsec - start.tv_nsec) / 1000000000.0);
+        totalTime+=((double)(end.tv_sec - start.tv_sec) + (double)(end.tv_nsec - start.tv_nsec) / 1000000000.0);
     }
     printf("Average time taken for %s over %d iterations: %f seconds\n", name, 30, totalTime / 30);
 }
+
 
 int main() {
     char choice='0';
@@ -73,12 +77,13 @@ int main() {
         return 0;
     }
 
+    /* user input for the scalar value (x)*/
     while(x==FLT_MAX) {
         printf("Enter a scalar value (float): ");
-        if(scanf("%f", &x) != 1) {
+        if(scanf("%f", &x)!=1){  // <-- checks if the input is a valid float
             printf("Invalid input. Please enter a valid float value.\n");
-            while(getchar() != '\n'); // Clear the input buffer
-            x = FLT_MAX; // Reset x to FLT_MAX to continue the loop
+            while(getchar() != '\n'); 
+            x = FLT_MAX;
         }
     }
 
