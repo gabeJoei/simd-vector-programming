@@ -26,10 +26,15 @@ Figure 3. Comparitive Table of execution time, correctness, and boundary checks
 #### ii.a) Speedup comparisons of versions against C
 ![Fig_5](imgs/fig5.png)
 
+Figure 3. Comparitive Table of speedups against C
+
 Based on the speedup comparison results against the C version. It can be said that XMM and YMM constantly out performs the C version due to its ability to parallel compute. The concept of parallelism in XMM and YMM allows each version to perform the AXPY calculation by handling 4 and 8 floats at a time, respectively. However, for the x86_64 version, it can be seen that C out performs its execution time when size is 2^20 and 2^26. This is due to its nature to calculate an operation 1 float at a time. Nevertheless, as the size continues to grow, such as when 2^27, it out performs C by 1.12x. As such it can be said that x86_64 will out perform C when handling size in extreme cases. 
 
 ### iii) Correctness checks
 ![Fig_6](imgs/fig6.png)
+
+Figure 3. Output result of correctness checks for all kernels
+
 
 ### vii) Boundary Check
 
