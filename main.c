@@ -52,6 +52,7 @@ void averageTime(char *name,
 
     struct timespec start={0,0}, end={0,0};
     double totalTime = 0.0;
+    printf("*------------------------------------------------------------\n\n");
     for (int i=0;i<30;i++) {
         clock_gettime(CLOCK_MONOTONIC, &start);
         function(scalarVal, vec, Xi, Yi, size);
@@ -74,16 +75,6 @@ void boundaryTest(
 ) {
     printf("\nBoundary test: %s\n", name);
 
-    int simdWidth;
-    if (strcmp(name, "XMM") == 0) {
-        simdWidth = 4;
-    } else if (strcmp(name, "YMM") == 0) {
-        simdWidth = 8;
-    } else {
-        simdWidth = 1;
-    }
-
-    int remainder= size % simdWidth;
     // Test the final elements and the first elements beyond the boundary
     int start = size - 5;
     int end = size + 8;
@@ -93,7 +84,6 @@ void boundaryTest(
         Yi[i] = (float)i + 0.005f;
         vec[i] = -1.0f; 
     }
-    printf("Testing elements from %d to %d (final 5 elements plus 8 extra elements)\n", start, end - 1);
     // Process the final 5 elements plus 8 extra elements
     function(scalarVal, vec, Xi, Yi, end);
 
@@ -110,7 +100,7 @@ void boundaryTest(
     }
 
     if (passed) {
-        printf("PASS: %s processed elements %d to %d correctly.\n",
+        printf("PASS: %s processed elements %d to %d correctly.\n\n",
                name, start, end - 1);
     }
 }
@@ -171,8 +161,6 @@ In this section, we also display the first 5 and last 5 vector element*/
 
     printf("\n");
     averageTime("C", cVersion, x, vecC, Xi, Yi, size);
-    boundaryTest("C", cVersion, x, vecC, Xi, Yi, size);
-
 /*---------------------------------------------------------*/
 
 /*Passing the function x86_64 into another function called averageTime.
@@ -191,7 +179,7 @@ In this section, we also display the first 5 and last 5 vector element*/
 
     averageTime("XMM", xmm, x, vecXMM, Xi, Yi, size);
     printVectors(vecC,vecXMM, size, "XMM");
-    //boundaryTest("XMM", xmm, x, vecXMM, Xi, Yi, size);
+    boundaryTest("XMM", xmm, x, vecXMM, Xi, Yi, size);
 
 /*---------------------------------------------------------*/
 
