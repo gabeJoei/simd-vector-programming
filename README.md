@@ -3,20 +3,11 @@ Members: Bactong, Gunita, Panganiban, Lobo
 
 ---
 ### i. Screenshot of  program output with execution time for all cases
+![Figure_1](imgs/fig1)
 
 ### ii. Comparative Table
 
-### iii. screenshot of the program output with correctness check (C)
+### iii. Analysis and Discussion
 
-### iv. screenshot of the program output with correctness check (x86_64)
-
-### v. screenshot of the program output with correctness check (xmm)
-
-### vi. screenshot of the program output with correctness check (ymm)
-
-### vii. screenshot of boundary check for simd xmm and simd ymm
-
-### viii. Analysis and Discussion
-
-## ix. problems encountered and solutions made
+## iv. problems encountered and solutions made
 
