@@ -161,6 +161,7 @@ In this section, we also display the first 5 and last 5 vector element*/
 
     printf("\n");
     averageTime("C", cVersion, x, vecC, Xi, Yi, size);
+    printVectors(vecC, vecC, size, "C");
 /*---------------------------------------------------------*/
 
 /*Passing the function x86_64 into another function called averageTime.
