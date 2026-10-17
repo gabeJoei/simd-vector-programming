@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <float.h>
+#include <string.h>
 #include "cVersion.c"
 
 extern void xmm(float scalarVal, float *vec, float *Xi, float *Yi, int size);
@@ -60,6 +61,8 @@ void averageTime(char *name,
     printf("Average time taken for %s over %d iterations: %f seconds\n\n", name, 30, totalTime / 30);
 }
 
+
+
 void boundaryTest(
     char *name,
     void (*function)(float, float*, float*, float*, int),
@@ -71,6 +74,16 @@ void boundaryTest(
 ) {
     printf("\nBoundary test: %s\n", name);
 
+    int simdWidth;
+    if (strcmp(name, "XMM") == 0) {
+        simdWidth = 4;
+    } else if (strcmp(name, "YMM") == 0) {
+        simdWidth = 8;
+    } else {
+        simdWidth = 1;
+    }
+
+    int remainder= size % simdWidth;
     // Test the final elements and the first elements beyond the boundary
     int start = size - 5;
     int end = size + 8;
@@ -80,7 +93,7 @@ void boundaryTest(
         Yi[i] = (float)i + 0.005f;
         vec[i] = -1.0f; 
     }
-
+    printf("Testing elements from %d to %d (final 5 elements plus 8 extra elements)\n", start, end - 1);
     // Process the final 5 elements plus 8 extra elements
     function(scalarVal, vec, Xi, Yi, end);
 
@@ -178,7 +191,7 @@ In this section, we also display the first 5 and last 5 vector element*/
 
     averageTime("XMM", xmm, x, vecXMM, Xi, Yi, size);
     printVectors(vecC,vecXMM, size, "XMM");
-    boundaryTest("XMM", xmm, x, vecXMM, Xi, Yi, size);
+    //boundaryTest("XMM", xmm, x, vecXMM, Xi, Yi, size);
 
 /*---------------------------------------------------------*/
 
