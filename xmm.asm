@@ -8,7 +8,7 @@ xmm:
 
     shufps xmm0, xmm0, 0       ;Copy scalarVal into all 4 XMM lanes
     xor r10, r10               ;Set index i = 0
-    mov r11, [rsp+40]          ;Load vector length n
+    mov r11d, [rsp+40]          ;Load vector length n
 
 .loop:
     ;Check if 4 elements remain for processing
