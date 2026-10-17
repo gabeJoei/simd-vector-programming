@@ -10,28 +10,37 @@
 extern void ymm(float scalarVal,float *vec, float *Xi, float *Yi, int size);
 
 /*Function that prints the first 5 and last 5 elements of a vector*/
-void printVector(float *vec, int size, char *name) {
-    printf("%s: ", name);
-    printf("First 5 elements of the vector: ");
+void printVectors(float *vecC, float *vecAsm, int size, char *name) {
+    printf("Version %s against C (sanity checker)\n", name);
+    printf("First 5 elements of the C version: ");
     for (int i=0;i<5;i++) {
-        printf("%f ", vec[i]);
+        printf("%f ", vecC[i]);
     }
-    printf("\nLast 5 elements of the vector: ");
+    printf("\nFirst 5 elements of the %s version: ", name);
+    for (int i=0;i<5;i++) {
+        printf("%f ", vecAsm[i]);
+    }
+    printf("\nLast 5 elements of the C version: ");
     for (int i=size-5;i<size;i++) {
-        printf("%f ", vec[i]);
+        printf("%f ", vecC[i]);
+    }
+    printf("\nLast 5 elements of the %s version: ", name);
+    for (int i=size-5;i<size;i++) {
+        printf("%f ", vecAsm[i]);
     }
     printf("\n\n");
 }
 
 /*Function that compares the elements of four vectors*/
-void comparisonChecker(float *vecC, float *vecXMM, float *vecx86_64, float *vecYMM, int size) {
+void comparisonChecker(float *vecC, float *asmVec, int size, char *name) {
     for (int i = 0; i < size; i++) {
-        if (vecC[i] != vecXMM[i] || vecC[i] != vecx86_64[i] || vecC[i] != vecYMM[i]) {
-            printf("Mismatch found at index %d: C=%f, XMM=%f, x86_64=%f, YMM=%f\n", i, vecC[i], vecXMM[i], vecx86_64[i], vecYMM[i]);
+        if (vecC[i] != asmVec[i]) {
+            printf("Mismatch found at index %d: C=%f, %s=%f\n", i, vecC[i], name, asmVec[i]);
             return;
         }
     }
-    printf("All vectors match. Yiee!\n");
+    printf("All elements match between C and %s.\n", name);
+    
 }
 
 /*Function that runs the ymm, xmm, x86_64 and the C versions of the Scalar vector (AXPY)
@@ -48,7 +57,7 @@ void averageTime(char *name,
         clock_gettime(CLOCK_MONOTONIC, &end);
         totalTime+=((double)(end.tv_sec - start.tv_sec) + (double)(end.tv_nsec - start.tv_nsec) / 1000000000.0);
     }
-    printf("Average time taken for %s over %d iterations: %f seconds\n", name, 30, totalTime / 30);
+    printf("Average time taken for %s over %d iterations: %f seconds\n\n", name, 30, totalTime / 30);
 }
 
 
@@ -105,9 +114,8 @@ int main() {
 Passing the function C into another function called averageTime.
 Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
-
+    printf("\n");
     averageTime("C", cVersion, x, vecC, Xi, Yi, size);
-    printVector(vecC, size, "C");
 /*---------------------------------------------------------*/
 
 /*Passing the function XMM into another function called averageTime.
@@ -115,7 +123,7 @@ Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
 
     //averageTime("XMM", xmm, x, vecXMM, Xi, Yi, size);
-    //printVector(vecXMM, size, "XMM");
+    //printVectors(vecC,vecXMM, size, "XMM");
 /*---------------------------------------------------------*/
 
 /*Passing the function x86_64 into another function called averageTime.
@@ -123,7 +131,7 @@ Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
 
     //averageTime("x86_64", x86_64, x, vecx86_64, Xi, Yi, size);
-    //printVector(vecx86_64, size, "x86_64");
+    //printVectors(vecC,vecx86_64, size, "x86_64");
 /*---------------------------------------------------------*/
 
 /*Passing the function YMM into another function called averageTime.
@@ -131,11 +139,14 @@ Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
 
     averageTime("YMM", ymm, x, vecYMM, Xi, Yi, size);
-    printVector(vecYMM, size, "YMM");
+    printVectors(vecC, vecYMM, size, "YMM");
 /*---------------------------------------------------------*/
 
 /* Checker that checks if the vectors values match*/
-comparisonChecker(vecC, vecXMM, vecx86_64, vecYMM, size);
+printf("\n\nChecking if the vectors match...\n");
+comparisonChecker(vecC, vecXMM, size, "XMM");
+comparisonChecker(vecC, vecx86_64, size, "x86_64");
+comparisonChecker(vecC, vecYMM, size, "YMM");
 
 /* We freed the allocated memory */
     _aligned_free(vecXMM);
