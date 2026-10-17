@@ -1,21 +1,16 @@
 section .text
 default rel
 global ymm
-ymm:    
-    ; create stack frame
-    push rbp
-    mov rbp, rsp
-    add rbp, 8+8
-    
+ymm:     
     ; CONTENTS:
     ; xmm0 = scalarVal
     ; rdx = *vec
     ; r8 = *xi
     ; r9 = *yi
-    ; [rbp+32] = size
+    ; [rsp+40] = size
     
     xor r10, r10 ; clear register r10 to be used for index.
-    movsxd r11, dword[rbp+40] ; obtain vector size
+    mov r11, [rsp+32] ; obtain vector size
     vbroadcastss ymm3, xmm0 ; duplicate scalarVal across ymm3
 
 ; convert vector size to bytes
@@ -40,6 +35,6 @@ imul r11, 4
     jmp .loop
     
 .break:
-    pop rbp
+    vzeroall
     xor rax, rax
     ret
