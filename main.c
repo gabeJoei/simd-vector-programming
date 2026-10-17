@@ -6,7 +6,7 @@
 
 //extern void xmm(int scalarVal, float *vec, float *Xi, float *Yi, int size);
 //extern void x86_64(int scalarVal,float *vec, float *Xi, float *Yi, int size);
-//extern void ymm(int scalarVal,float *vec, float *Xi, float *Yi, int size);
+extern void ymm(int scalarVal,float *vec, float *Xi, float *Yi, int size);
 
 
 void printVector(int scalarVal, float *vec, int size, char *name) {
@@ -19,7 +19,7 @@ void printVector(int scalarVal, float *vec, int size, char *name) {
     for (int i=size-5;i<size;i++) {
         printf("%f ", vec[i]);
     }
-    printf("\n");
+    printf("\n\n");
 }
 
 void comparisonChecker(float *vecC, float *vecXMM, float *vecx86_64, float *vecYMM, int size) {
@@ -33,7 +33,7 @@ void comparisonChecker(float *vecC, float *vecXMM, float *vecx86_64, float *vecY
 }
 
 void averageTime(char *name,
-                float (*function)(int, float*, float*, float*, int), 
+                void (*function)(int, float*, float*, float*, int), 
                 int scalarVal, float *vec, float *Xi, float *Yi, int size){
 
     struct timespec start={0,0}, end={0,0};
@@ -82,8 +82,8 @@ int main() {
     float *Yi = (float*)_aligned_malloc(size * sizeof(float), 32);
 
     for (int i = 0; i < size; i++) {
-       Xi[i] = sin(i)+0.005;
-       Yi[i] = cos(i)+0.005;
+       Xi[i] = i+0.005;
+       Yi[i] = i+0.005;
     }
 
 /*--------------------------------------------------------
@@ -100,7 +100,7 @@ Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
 
     //averageTime("XMM", xmm, scalarVal, vecXMM, Xi, Yi, size);
-    printVector(scalarVal, vecXMM, size, "XMM");
+    //printVector(scalarVal, vecXMM, size, "XMM");
 /*---------------------------------------------------------*/
 
 /*Passing the function x86_64 into another function called averageTime.
@@ -108,14 +108,14 @@ Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
 
     //averageTime("x86_64", x86_64, scalarVal, vecx86_64, Xi, Yi, size);
-    printVector(scalarVal, vecx86_64, size, "x86_64");
+    //printVector(scalarVal, vecx86_64, size, "x86_64");
 /*---------------------------------------------------------*/
 
 /*Passing the function YMM into another function called averageTime.
 Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
 
-    //averageTime("YMM", ymm, scalarVal, vecYMM, Xi, Yi, size);
+    averageTime("YMM", ymm, scalarVal, vecYMM, Xi, Yi, size);
     printVector(scalarVal, vecYMM, size, "YMM");
 /*---------------------------------------------------------*/
 

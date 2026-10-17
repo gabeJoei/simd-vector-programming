@@ -1,6 +1,5 @@
-float cVersion(int scalarVal, float *vec, float *Xi, float *Yi, int size) {
+void cVersion(int scalarVal, float *vec, float *Xi, float *Yi, int size) {
     for (int i = 0; i < size; i++) {
         vec[i]= scalarVal*Xi[i] + Yi[i];
     }
-    return 0;
 }
