@@ -6,7 +6,7 @@
 #include "cVersion.c"
 
 //extern void xmm(float scalarVal, float *vec, float *Xi, float *Yi, int size);
-//extern void x86_64(float scalarVal,float *vec, float *Xi, float *Yi, int size);
+extern void x86_64(float scalarVal,float *vec, float *Xi, float *Yi, int size);
 extern void ymm(float scalarVal,float *vec, float *Xi, float *Yi, int size);
 
 /*Function that prints the first 5 and last 5 elements of a vector*/
@@ -130,8 +130,8 @@ In this section, we also display the first 5 and last 5 vector element*/
 Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
 
-    //averageTime("x86_64", x86_64, x, vecx86_64, Xi, Yi, size);
-    //printVectors(vecC,vecx86_64, size, "x86_64");
+    averageTime("x86_64", x86_64, x, vecx86_64, Xi, Yi, size);
+    printVectors(vecC,vecx86_64, size, "x86_64");
 /*---------------------------------------------------------*/
 
 /*Passing the function XMM into another function called averageTime.
