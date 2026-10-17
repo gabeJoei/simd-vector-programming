@@ -37,6 +37,14 @@ Figure 3. Output result of correctness checks for all kernels
 
 
 ### vii) Boundary Check
+![Fig_7](imgs/fig7.png)
+
+Figure 7. Boundary Test Code
+
+The purpose of the boundary test function is to intentionally give the x86_64, XMM, and YMM out of bounds size, to observe if each program version can handle the excess elements. This is done by creating a test index start and end. Where the start index is size-5 and the end index is size 8. As such with size of 1,048,576 (2^20), the start index will be 1,048,571 and the end index will be 1,048,584. The total floating values being tested is 13 elements. For XMM there will be one extra element, and for the ymm there will be 5 extra elements. Based on the output of our program, both xmm and ymm were able to handle the extra elements and passed the boundary check. 
+
+![Fig_8](imgs/fig8.png)
+Figure 8. Boundary checks for all kernels
 
 ### viii) Analysis and Discussion
 The performance of the C, x86-64 assembly, XMM, and YMM implementations were evaluated using different vector sizes of 2 to the power of 20, 2 to the power of 26, and 2 to the power of 29 elements. Each implementation was timed to compare its execution time when processing different amounts of data.
@@ -47,7 +55,7 @@ As the vector size increases, the execution time is expected to increase because
 
 Additionally, performance depends on factors such as instruction efficiency, memory access, processor architecture, and overhead of handling remaining elements that could not be processed in complete vector groups, which may affect execution time. 
 
-### ix. problems encountered and solutions made
+### ix) problems encountered and solutions made
 1. Machine Compatibility Issues
 Problem: the program did not run consistently across different machines/computer. In particular, the program running on MacOS would crash before completing execution
 Solution: We reviewed and adjusted some parts of the code where the crash starts, addressing the issues encountered when running the program on different machines
