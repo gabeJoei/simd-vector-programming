@@ -5,7 +5,7 @@
 #include <float.h>
 #include "cVersion.c"
 
-//extern void xmm(float scalarVal, float *vec, float *Xi, float *Yi, int size);
+extern void xmm(float scalarVal, float *vec, float *Xi, float *Yi, int size);
 extern void x86_64(float scalarVal,float *vec, float *Xi, float *Yi, int size);
 extern void ymm(float scalarVal,float *vec, float *Xi, float *Yi, int size);
 
@@ -176,9 +176,9 @@ In this section, we also display the first 5 and last 5 vector element*/
 Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
 
-    //averageTime("XMM", xmm, x, vecXMM, Xi, Yi, size);
-    //printVectors(vecC,vecXMM, size, "XMM");
-    //boundaryTest("XMM", xmm, x, vecXMM, Xi, Yi, size);
+    averageTime("XMM", xmm, x, vecXMM, Xi, Yi, size);
+    printVectors(vecC,vecXMM, size, "XMM");
+    boundaryTest("XMM", xmm, x, vecXMM, Xi, Yi, size);
 
 /*---------------------------------------------------------*/
 
