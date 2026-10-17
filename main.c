@@ -2,14 +2,15 @@
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
+#include <float.h>
 #include "cVersion.c"
 
-//extern void xmm(int scalarVal, float *vec, float *Xi, float *Yi, int size);
-//extern void x86_64(int scalarVal,float *vec, float *Xi, float *Yi, int size);
-extern void ymm(int scalarVal,float *vec, float *Xi, float *Yi, int size);
+//extern void xmm(float scalarVal, float *vec, float *Xi, float *Yi, int size);
+//extern void x86_64(float scalarVal,float *vec, float *Xi, float *Yi, int size);
+extern void ymm(float scalarVal,float *vec, float *Xi, float *Yi, int size);
 
 
-void printVector(int scalarVal, float *vec, int size, char *name) {
+void printVector(float *vec, int size, char *name) {
     printf("%s: ", name);
     printf("First 5 elements of the vector: ");
     for (int i=0;i<5;i++) {
@@ -33,8 +34,8 @@ void comparisonChecker(float *vecC, float *vecXMM, float *vecx86_64, float *vecY
 }
 
 void averageTime(char *name,
-                void (*function)(int, float*, float*, float*, int), 
-                int scalarVal, float *vec, float *Xi, float *Yi, int size){
+                void (*function)(float, float*, float*, float*, int), 
+                float scalarVal, float *vec, float *Xi, float *Yi, int size){
 
     struct timespec start={0,0}, end={0,0};
     double totalTime = 0.0;
@@ -50,7 +51,7 @@ void averageTime(char *name,
 int main() {
     char choice='0';
     int size;
-    int scalarVal=12;
+    float x=FLT_MAX;
 
    
     /* User input for vector size.*/
@@ -72,6 +73,15 @@ int main() {
         return 0;
     }
 
+    while(x==FLT_MAX) {
+        printf("Enter a scalar value (float): ");
+        if(scanf("%f", &x) != 1) {
+            printf("Invalid input. Please enter a valid float value.\n");
+            while(getchar() != '\n'); // Clear the input buffer
+            x = FLT_MAX; // Reset x to FLT_MAX to continue the loop
+        }
+    }
+
     /*Initializing Vector size and elements*/
     float *vecC = (float*)_aligned_malloc(size * sizeof(float), 32);
     float *vecXMM = (float*)_aligned_malloc(size * sizeof(float), 16);
@@ -91,32 +101,32 @@ Passing the function C into another function called averageTime.
 Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
 
-    averageTime("C", cVersion, scalarVal, vecC, Xi, Yi, size);
-    printVector(scalarVal, vecC, size, "C");
+    averageTime("C", cVersion, x, vecC, Xi, Yi, size);
+    printVector(vecC, size, "C");
 /*---------------------------------------------------------*/
 
 /*Passing the function XMM into another function called averageTime.
 Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
 
-    //averageTime("XMM", xmm, scalarVal, vecXMM, Xi, Yi, size);
-    //printVector(scalarVal, vecXMM, size, "XMM");
+    //averageTime("XMM", xmm, x, vecXMM, Xi, Yi, size);
+    //printVector(vecXMM, size, "XMM");
 /*---------------------------------------------------------*/
 
 /*Passing the function x86_64 into another function called averageTime.
 Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
 
-    //averageTime("x86_64", x86_64, scalarVal, vecx86_64, Xi, Yi, size);
-    //printVector(scalarVal, vecx86_64, size, "x86_64");
+    //averageTime("x86_64", x86_64, x, vecx86_64, Xi, Yi, size);
+    //printVector(vecx86_64, size, "x86_64");
 /*---------------------------------------------------------*/
 
 /*Passing the function YMM into another function called averageTime.
 Where it runs the function 30 times and calculates the average time.
 In this section, we also display the first 5 and last 5 vector element*/
 
-    averageTime("YMM", ymm, scalarVal, vecYMM, Xi, Yi, size);
-    printVector(scalarVal, vecYMM, size, "YMM");
+    averageTime("YMM", ymm, x, vecYMM, Xi, Yi, size);
+    printVector(vecYMM, size, "YMM");
 /*---------------------------------------------------------*/
 
 /* Checker that checks if the vectors values match*/
