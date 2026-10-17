@@ -6,8 +6,12 @@ Members: Bactong, Gunita, Panganiban, Lobo
 ![Fig_1](imgs/fig1.png)
 Figure 1. Program output for case 2^20
 
+---
+
 ![Fig_2](imgs/fig2.png)
 Figure 2. Program output for case 2^26
+
+---
 
 ![Fig_3](imgs/fig3.png)
 Figure 3. Program output for case 2^29
