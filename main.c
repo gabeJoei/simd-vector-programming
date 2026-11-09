@@ -52,53 +52,54 @@ void averageTime(char *name,
 
     struct timespec start={0,0}, end={0,0};
     double totalTime = 0.0;
+    double maxTime = 0.0;
+    double minTime = 999999999;
+    double executionTime = 0.0;
+
     printf("*------------------------------------------------------------\n\n");
     for (int i=0;i<30;i++) {
         clock_gettime(CLOCK_MONOTONIC, &start);
         function(scalarVal, vec, Xi, Yi, size);
         clock_gettime(CLOCK_MONOTONIC, &end);
-        totalTime+=((double)(end.tv_sec - start.tv_sec) + (double)(end.tv_nsec - start.tv_nsec) / 1000000000.0);
+        executionTime=((double)(end.tv_sec - start.tv_sec) + (double)(end.tv_nsec - start.tv_nsec) / 1000000000.0);
+        totalTime += executionTime;
+        if (executionTime > maxTime) {
+            maxTime = executionTime;
+        }
+        if (executionTime < minTime) {
+            minTime = executionTime;
+        }
     }
-    printf("Average time taken for %s over %d iterations: %f seconds\n\n", name, 30, totalTime / 30);
+    printf("Average time taken for %s over %d iterations: %f milliseconds\n", name, 30, (totalTime / 30)*1000);
+    printf("Maximum time taken for %s over %d iterations: %f milliseconds\n", name, 30, maxTime*1000);
+    printf("Minimum time taken for %s over %d iterations: %f milliseconds\n\n", name, 30, minTime*1000);
 }
 
 
 
-void boundaryTest(
-    char *name,
-    void (*function)(float, float*, float*, float*, int),
-    float scalarVal,
-    float *vec,
-    float *Xi,
-    float *Yi,
-    int size
+void boundaryTest(char *name,void (*function)(float, float*, float*, float*, int),
+                        float scalarVal,float *vec,float *Xi,float *Yi,int size
 ) {
     printf("\nBoundary test: %s\n", name);
-
     // Test the final elements and the first elements beyond the boundary
     int start = size - 5;
     int end = size + 8;
-
     for (int i = start; i < end; i++) {
         Xi[i] = (float)i + 0.005f;
-        Yi[i] = (float)i + 0.005f;
+        Yi[i] = (float)i + 0.0025f;
         vec[i] = -1.0f; 
     }
     // Process the final 5 elements plus 8 extra elements
     function(scalarVal, vec, Xi, Yi, end);
-
     int passed = 1;
-
     for (int i = start; i < end; i++) {
         float expected = scalarVal * Xi[i] + Yi[i];
-
         if (vec[i] != expected) {
             printf("FAIL at index %d: expected=%f, actual=%f\n",
                    i, expected, vec[i]);
             passed = 0;
         }
     }
-
     if (passed) {
         printf("PASS: %s processed elements %d to %d correctly.\n\n",
                name, start, end - 1);
@@ -150,8 +151,8 @@ int main() {
     float *Yi = (float*)_aligned_malloc(size * sizeof(float), 32);
 
     for (int i = 0; i < size; i++) {
-       Xi[i] = i+0.005;
-       Yi[i] = i+0.005;
+       Xi[i] = (float)i;
+       Yi[i] = (float)i*0.0025f;
     }
 
 /*--------------------------------------------------------
